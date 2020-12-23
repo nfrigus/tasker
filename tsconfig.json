@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": ["es6"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "ES2018",
+    "types": ["node", "reflect-metadata"]
+  }
+}

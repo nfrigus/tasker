@@ -1,0 +1,4 @@
+!.gitkeep
+*.log
+config/secrets/*
+node_modules/
