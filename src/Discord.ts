@@ -9,6 +9,7 @@ import moment = require('moment')
 
 export enum DiscordMessageFilter {
   'all' = 'all',
+  'direct' = 'direct',
   'guild' = 'guild',
   'none' = 'none',
 }
@@ -24,7 +25,7 @@ export default class Discord {
     @inject('config') private config,
     private client: Client,
   ) {
-    this.guilds = new Set(this.config.discord.guilds)
+    this.guilds = new Set(Object.values(this.config.discord.guilds))
 
     this.messages$ = fromEvent(this.client, 'message')
 
@@ -36,6 +37,8 @@ export default class Discord {
       filter((msg: any) => msg.content === 'ping'),
       tap((msg: any) => msg.reply('pong')),
     ).subscribe()
+
+    this.setMsgFilter(DiscordMessageFilter.guild)
   }
 
   public async login() {
@@ -100,7 +103,8 @@ export default class Discord {
   public setMsgFilter(type: DiscordMessageFilter) {
     this.filterMessage = {
       [DiscordMessageFilter.all]: (msg) => true,
-      [DiscordMessageFilter.guild]: (msg) => this.guilds.has(msg.channel.guild.id),
+      [DiscordMessageFilter.direct]: (msg) => !msg.channel.guild,
+      [DiscordMessageFilter.guild]: (msg) => !msg.channel.guild || this.guilds.has(msg.channel.guild.id),
       [DiscordMessageFilter.none]: (msg) => false,
     }[type]
   }

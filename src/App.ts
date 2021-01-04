@@ -108,7 +108,7 @@ export default class {
     )
   }
   private logDiscordMessage(msg: any) {
-    console.log(`${msg.channel.guild.name}/${msg.channel.name} ${msg.author.username}: ${msg.content}`)
+    console.log(`${msg.channel.guild?.name || ''}/${msg.channel.name} ${msg.author.username}: ${msg.content}`)
   }
 
   private clearScreen() {
