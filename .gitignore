@@ -1,4 +1,5 @@
 !.gitkeep
 *.log
+config/local*
 config/secrets/*
 node_modules/
