@@ -17,9 +17,9 @@ export enum DiscordMessageFilter {
 @injectable()
 export default class Discord {
   private filteredMessages$
-  private messages$
-
   private guilds: Set<string>
+  private messages$
+  private logMessages = false
 
   constructor(
     @inject('config') private config,
@@ -94,8 +94,9 @@ export default class Discord {
     return this.filteredMessages$
   }
 
-  private logMessage(msg: any) {
-    return fs.appendFile(this.config.logsDir + '/messages.log', serializeMessage(msg) + '\n')
+  private async logMessage(msg: any) {
+    if (this.logMessages)
+      await fs.appendFile(this.config.logsDir + '/messages.log', serializeMessage(msg) + '\n')
   }
 
   private filterMessage = (msg: any) => true

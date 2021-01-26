@@ -9,11 +9,6 @@ export class Harvest {
   private readonly axios = axios.create({
     baseURL: 'https://api.harvestapp.com',
   })
-
-  private get task() {
-    return this.config.harvest.task
-  }
-
   constructor(
     @inject('config') private config,
   ) {
@@ -21,8 +16,10 @@ export class Harvest {
       .forEach(([key, value]) => {
         this.axios.defaults.headers.common[key] = value
       })
+  }
 
-    // this.getMe().then(res => console.log('Harvest user: ', res.data.id, res.data.email))
+  private get task() {
+    return this.config.harvest.task
   }
 
   getMe() {
