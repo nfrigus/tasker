@@ -4,6 +4,8 @@ import { inject, injectable } from 'inversify'
 import { HarvestSync } from './tracking'
 import Discord, { DiscordMessageFilter } from './Discord'
 import IO from './core/IO'
+import * as chalk from 'chalk'
+import * as moment from 'moment'
 
 
 @injectable()
@@ -72,7 +74,12 @@ export default class {
     )
   }
   private logDiscordMessage = (msg: any) => {
-    this.io.log(`${msg.channel.guild?.name || ''}/${msg.channel.name} ${msg.author.username}: ${msg.content}`)
+    this.io.log(
+      chalk.red(moment(msg.createdAt).format('Y-MM-DD HH:mm:ss')),
+      chalk.dim(`${msg.channel.guild?.name || ''}/${msg.channel.name}`),
+      chalk.blue(msg.author.username),
+      msg.content
+    )
   }
 }
 

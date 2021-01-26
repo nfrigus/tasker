@@ -1,12 +1,15 @@
 import { injectable } from 'inversify'
 import { Harvest } from './Harvest'
 import { TaskTimer } from './TaskTimer'
+import IO from '../core/IO'
+import chalk = require('chalk')
 
 
 @injectable()
 export class HarvestSync {
   constructor(
     private harvest: Harvest,
+    private io: IO,
     private sheet: TaskTimer,
   ) {}
 
@@ -32,7 +35,7 @@ export class HarvestSync {
   }
 
   private async syncDay(day, r, e) {
-    console.log(day, r.hours, e.effort)
+    this.io.log(day, chalk.yellow(r.hours), e.effort)
 
     if (!e.effort && r.hours) {
       throw new Error('Unexpected report')
@@ -40,7 +43,7 @@ export class HarvestSync {
     if (!e.effort) return
 
     if (!r.hours) {
-      console.log(`Posting ${e.effort} hours`)
+      this.io.log(`Posting ${e.effort} hours`)
       await this.harvest.postTimeEntry({
         hours: e.effort,
         notes: e.description,
@@ -50,7 +53,7 @@ export class HarvestSync {
     }
 
     if (r.hours !== e.effort || r.notes !== e.description) {
-      console.log('Patching report...')
+      this.io.log('Patching report...')
       await this.harvest.patchTimeEntry(r.id, {
         hours: e.effort,
         notes: e.description,
