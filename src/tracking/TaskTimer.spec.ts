@@ -4,21 +4,17 @@ import { container } from "../di"
 import { TaskTimer } from "./TaskTimer"
 
 describe("TaskTimer", () => {
-  const sheetId = "1S_EvpIkN62UQbW-iKEKPwZSdQLeYYFwf5yHXyfHexF4"
   const entity = container.get(TaskTimer)
 
-  it("getLoggedRanges", async () => {
-    const months = [
-      'Jan', 'Feb', 'Mar', 'Apr',
-      'May', 'Jun', 'Jul', 'Aug',
-      'Sep', 'Oct', 'Nov', 'Dec',
-    ].map(i => `${i}!A2:E`)
-    const res = entity.getLoggedRanges()
-
-    res.should.be.an('array')
-    res.length.should.be.within(1, 12)
-    res.forEach((month, i) => month.should.eql(months[i]))
-  })
+  it("getSheetTabs", async () => entity
+    .getSheetTabs()
+    .then(tabs => tabs
+      .should.eql([
+        'Glossary',
+        'Days',
+        'Log',
+        'Legacy',
+      ])))
 
   it("fetchLoggedData", async () => {
     const res = await entity.fetchLoggedData()
@@ -31,5 +27,6 @@ describe("TaskTimer", () => {
       'project',
       'scope',
     ]))
+    res.some(i => i.project === 'CC').should.be.ok
   })
 })
