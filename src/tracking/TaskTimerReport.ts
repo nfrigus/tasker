@@ -1,11 +1,26 @@
-export class TaskTimerReport {
-  private data: any
+import { trim } from '../common'
 
-  constructor(data) {
+export interface WorkLog {
+  date: string
+  description: string
+  effort: number
+  project: string
+  scope: string
+}
+
+interface ProjectDaySummary {
+  description: string
+  effort: number
+}
+
+export class TaskTimerReport {
+  private data: WorkLog[]
+
+  constructor(data: WorkLog[]) {
     this.data = data
   }
 
-  getCombinedDayProjectLog(date, project) {
+  getCombinedDayProjectLog(date: string, project: string): ProjectDaySummary {
     const tasks = this.data
       .filter(i => i.project === project && i.date === date)
 
@@ -17,13 +32,4 @@ export class TaskTimerReport {
       effort,
     }
   }
-}
-
-function trim(str, chars) {
-  if (!str) return str
-  if (chars === "]") chars = "\\]";
-  if (chars === "\\") chars = "\\\\";
-  return str.replace(new RegExp(
-    "^[" + chars + "]+|[" + chars + "]+$", "g",
-  ), "");
 }

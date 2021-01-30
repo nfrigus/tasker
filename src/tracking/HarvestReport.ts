@@ -1,3 +1,5 @@
+import { trim } from '../common'
+
 export class HarvestReport {
   private data: any
 
@@ -16,13 +18,4 @@ export class HarvestReport {
 
     return report
   }
-}
-
-function trim(str, chars) {
-  if (!str) return str
-  if (chars === "]") chars = "\\]";
-  if (chars === "\\") chars = "\\\\";
-  return str.replace(new RegExp(
-    "^[" + chars + "]+|[" + chars + "]+$", "g",
-  ), "");
 }
