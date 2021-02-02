@@ -16,7 +16,7 @@ export default class IO {
     this.in$ = fromEvent(this.process.stdin, 'data')
   }
 
-  public init() {
+  public plug() {
     process.stdin.setRawMode(true)
     process.stdin.resume()
     process.stdin.setEncoding('utf8')
