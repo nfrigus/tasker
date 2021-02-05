@@ -1,8 +1,8 @@
-import { injectable } from 'inversify'
-import { Harvest } from './Harvest'
-import { TaskTimer } from './TaskTimer'
+import * as chalk from 'chalk'
 import IO from '../core/IO'
-import chalk = require('chalk')
+import { Harvest } from './Harvest'
+import { injectable } from 'inversify'
+import { TaskTimer } from './TaskTimer'
 
 
 @injectable()

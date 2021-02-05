@@ -22,6 +22,11 @@ export default {
       'Harvest-Account-ID': '1266901',
     },
   },
+  timeDoctor: {
+    company_id: 387775,
+    token: '<token>',
+    user_id: 602776,
+  },
   tracking: {
     sheets: {
       2020: '1S_EvpIkN62UQbW-iKEKPwZSdQLeYYFwf5yHXyfHexF4',
