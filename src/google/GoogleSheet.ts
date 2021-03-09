@@ -1,6 +1,8 @@
 import { injectable } from 'inversify'
 import GoogleAuth from './GoogleAuth'
 import { sheets_v4 } from 'googleapis'
+import { GaxiosResponse } from 'gaxios'
+import Schema$Spreadsheet = sheets_v4.Schema$Spreadsheet
 
 @injectable()
 export class GoogleSheet {
@@ -16,7 +18,7 @@ export class GoogleSheet {
     return client.spreadsheets.values.get(req)
   }
 
-  async getSheets(spreadsheetId) {
+  async getBook(spreadsheetId): Promise<GaxiosResponse<Schema$Spreadsheet>> {
     const client = await this.getClient()
 
     return client.spreadsheets.get({ spreadsheetId })

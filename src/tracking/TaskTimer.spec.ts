@@ -10,14 +10,14 @@ describe("TaskTimer", () => {
     .getSheetTabs()
     .then(tabs => tabs
       .should.eql([
-        'Glossary',
+        'Legend',
         'Days',
         'Log',
-        'Legacy',
+        'Stats',
       ])))
 
   it("fetchLoggedData", async () => {
-    const res = await entity.fetchLoggedData()
+    const res = await entity.loadWorkLog()
 
     res.should.be.an('array')
     res.forEach(i => i.should.have.keys([

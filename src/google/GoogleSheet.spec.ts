@@ -12,7 +12,7 @@ describe("GoogleSheet", () => {
   })
 
   it("getSheets", async () => {
-    const res = await entity.getSheets(sheetId)
+    const res = await entity.getBook(sheetId)
 
     res.data.sheets.map(i => i.properties.title).should.eql([
         'Glossary',

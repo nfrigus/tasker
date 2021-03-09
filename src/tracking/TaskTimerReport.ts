@@ -1,4 +1,5 @@
 import { trim } from '../common'
+import * as moment from 'moment'
 
 export interface WorkLog {
   date: string
