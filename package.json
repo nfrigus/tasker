@@ -2,7 +2,7 @@
   "scripts": {
     "debug": "node --inspect --nolazy .",
     "start": "node .",
-    "test": "mocha -r src/globals.test.js \"src/**/*.spec.ts\""
+    "test": "mocha --retries 3 --parallel -r src/globals.test.js \"src/**/*.spec.ts\""
   },
   "dependencies": {
     "axios": "^0.21.0",
