@@ -29,4 +29,6 @@ describe("TaskTimer", () => {
     ]))
     res.some(i => i.project === 'CC').should.be.ok
   })
+
+  it("verifyBook", async () => entity.verifyBook())
 })
