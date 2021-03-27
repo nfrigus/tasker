@@ -33,4 +33,30 @@ export class TaskTimerReport {
       effort,
     }
   }
+
+  getDateEffort(date: string) {
+    return this.data
+      .filter(i => i.date === date)
+      .reduce((a, i) => a + i.effort, 0)
+  }
+
+  getYearDailyEffortReport() {
+    const date = moment().startOf('year')
+    const now = moment()
+    const report: { day: string; effort: number }[] = []
+
+    while (date < now) {
+      const day = date.format('YYYY-MM-DD')
+      const effort = this.getDateEffort(day)
+
+      report.push({
+        day,
+        effort,
+      })
+
+      date.add(1, 'd')
+    }
+
+    return report
+  }
 }
