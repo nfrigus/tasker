@@ -68,15 +68,20 @@ describe("TimeDoctor", () => {
     ]))
   })
 
-  it("getTimeLoggedPerMonth", async () => {
-    const res = await entity.getTimeLoggedPerMonth()
+  it(`getStats`, async () => {
+    const res = await entity.getStats()
 
-    res.should.be.a('number')
+    res.should.have.keys(['day', 'month', 'week'])
   })
 
-  it("getTimeLoggedPerWeek()", async () => {
-    const res = await entity.getTimeLoggedPerWeek()
-
-    res.should.be.a('number')
-  })
+  it(`formatStatsReport`, async () => entity.formatStatsReport({
+      day: 8,
+      month: 165,
+      week: 40,
+    })
+    .replace(/\u001b\[33m|\u001b\[39m/g, '')
+    .should.eqls('' +
+      '  last day:     8.0 hours\n' +
+      '  last month: 165.0 hours\n' +
+      '  last week:   40.0 hours'))
 })

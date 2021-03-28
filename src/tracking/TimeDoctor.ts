@@ -2,6 +2,7 @@ import axios from 'axios'
 import { inject, injectable } from 'inversify'
 import * as moment from 'moment'
 import { Moment } from 'moment'
+import * as chalk from 'chalk'
 
 
 @injectable()
@@ -41,13 +42,30 @@ export class TimeDoctor {
     })
   }
 
-  getTimeLoggedPerMonth() {
-    return this.getWorkLogs(moment().startOf('month'), moment())
-      .then(res => +(res.total / 3600).toFixed(1))
+  getStats() {
+    return Promise.all([
+      this.getTimeLoggedPer('day'),
+      this.getTimeLoggedPer('month'),
+      this.getTimeLoggedPer('week'),
+    ]).then(res => ({
+      month: res[1],
+      week: res[2],
+      day: res[0],
+    }))
   }
 
-  getTimeLoggedPerWeek() {
-    return this.getWorkLogs(moment().startOf('week'), moment())
+  formatStatsReport = (o: Record<string, number>): string => {
+    return Object.entries(o)
+      .map(([k, v]) =>
+        `  last ${k}:`.padEnd(13, ' ') +
+        chalk.yellow(v
+          .toFixed(1)
+          .padStart(6, ' ')) + ' hours'
+      ).join('\n')
+  }
+
+  private getTimeLoggedPer(interval) {
+    return this.getWorkLogs(moment().startOf(interval), moment())
       .then(res => +(res.total / 3600).toFixed(1))
   }
 
