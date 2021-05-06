@@ -17,6 +17,7 @@ export default class GoogleAuth {
     @inject('config') private config,
   ) {}
 
+  // todo: Refactor to use Storage
   private getTokenPath() {
     return this.config.secretsDir + '/google.token.json'
   }

@@ -23,8 +23,9 @@ export default {
     },
   },
   timeDoctor: {
+    client_id: '2649_2qf0mzs2plmo4ocwsw4wcooc4swg0wggwc4gs4og0o0scko4w0',
     company_id: 387775,
-    token: '<token>',
+    secret_key: '<token>',
     user_id: 602776,
   },
   tracking: {
