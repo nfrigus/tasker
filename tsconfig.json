@@ -2,7 +2,7 @@
   "compilerOptions": {
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "lib": ["es6"],
+    "lib": ["es6", "esnext"],
     "module": "commonjs",
     "moduleResolution": "node",
     "target": "ES2018",

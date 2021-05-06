@@ -12,22 +12,24 @@ export default class IO {
 
   constructor(
     @inject("process") private process,
+    @inject("stdin") private stdin,
+    @inject("stdout") private stdout,
   ) {
-    this.in$ = fromEvent(this.process.stdin, 'data')
+    this.in$ = fromEvent(this.stdin, 'data')
   }
 
   public plug() {
-    process.stdin.setRawMode(true)
-    process.stdin.resume()
-    process.stdin.setEncoding('utf8')
+    this.stdin.setRawMode(true)
+    this.stdin.resume()
+    this.stdin.setEncoding('utf8')
 
     const ext$ = this.whenKey('\u0003', '')
-      .pipe(tap(() => process.exit()))
+      .pipe(tap(() => this.process.exit()))
     const cls$ = this.whenKey('c', 'Clear screen')
       .pipe(tap(() => this.clearScreen()))
     const hlp$ = this.whenKey('?', 'Print help')
       .pipe(tap(() => this.printKeys()))
-    const out$ = this.out$.pipe(tap(str => process.stdout.write(str + '\n')))
+    const out$ = this.out$.pipe(tap(str => this.stdout.write(str + '\n')))
 
     return merge(
       cls$,

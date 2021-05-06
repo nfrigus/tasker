@@ -10,7 +10,9 @@ export const container = new Container({
 })
 
 container.bind("app").to(App)
-container.bind("process").toConstantValue(process)
 container.bind("config").toConstantValue(config)
+container.bind("process").toConstantValue(process)
+container.bind("stdin").toConstantValue(process.stdin)
+container.bind("stdout").toConstantValue(process.stdout)
 container.bind(App).to(App)
 container.bind(Client).toFactory(() => new Client)
