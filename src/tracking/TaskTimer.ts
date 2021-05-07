@@ -30,6 +30,10 @@ export class TaskTimer {
       label: "MonthTrack",
       range: "Days!F0:M13"
     },
+    MonthStats: {
+      label: "MonthStats",
+      range: "Stats!A0:E20",
+    },
     WorkLog: {
       label: "WorkLog",
       range: "Log!A:F"
@@ -40,11 +44,11 @@ export class TaskTimer {
     },
     MonthTarget: {
       label: "MonthTarget",
-      range: "Log!H0:K5"
+      range: "Log!H0:H5"
     },
     MonthProjectReport: {
       label: "MonthProjectReport",
-      range: "Log!H6:K49"
+      range: "Log!H6:H49"
     }
   }
 
@@ -70,7 +74,7 @@ export class TaskTimer {
       range: parseRange(book, i.range),
     }))
 
-    expect(Object.values(this.ranges)).to.be.eql(namedRanges)
+    expect(namedRanges).to.be.eql(Object.values(this.ranges))
   }
 
   public async getSheetTabs(): Promise<string[]> {
