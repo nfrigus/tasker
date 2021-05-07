@@ -83,31 +83,41 @@ export class TimeDoctor {
   }
 
   private async getRequest(path: string, params?: Record<string, string>) {
-    if (!this.isAuthenticated()) {
-      await this.authenticate()
-    }
-
     return this.axios.get(path, {
       params: {
         ...params,
         _format: 'json',
-        access_token: this.auth.access_token,
+        access_token: await this.authenticate(),
       }
     }).then(res => res.data)
   }
 
-  private isAuthenticated(): boolean {
-    return this.auth && typeof this.auth.expires_at === 'number' && this.auth.expires_at > Date.now()
-  }
-
+  /**
+   * todo: Create wizard to get initial TimeDoctor API refresh token
+   * ```sh
+   * CLIENT_ID="2649_2qf0mzs2plmo4ocwsw4wcooc4swg0wggwc4gs4og0o0scko4w0"
+   * REDIRECT_URI="https%3A%2F%2Fadmin.timedoctor.com%2Fv2%2Fcontent%2Fget_api_key.php"
+   * CLIENT_SECRET="..."
+   *
+   * curl "https://webapi.timedoctor.com/oauth/v2/auth?client_id=$CLIENT_ID&redirect_uri=$REDIRECT_URI&response_type=code"
+   * AUTHORIZATION_CODE="..."
+   * curl "https://webapi.timedoctor.com/oauth/v2/token?client_id=$CLIENT_ID&client_secret=$CLIENT_SECRET&grant_type=authorization_code&redirect_uri=$REDIRECT_URI&code=$AUTHORIZATION_CODE"
+   * REFRESH_TOKEN="..."
+   * curl "https://webapi.timedoctor.com/oauth/v2/token?client_id=$CLIENT_ID&client_secret=$CLIENT_SECRET&grant_type=refresh_token&refresh_token=$REFRESH_TOKEN"
+   * ```
+   */
   private async authenticate() {
-    this.auth = await this.storage.loadJson('timedoctor')
+    if (!this.auth) {
+      this.auth = await this.storage.loadJson('timedoctor')
+    }
 
-    if (!this.isAuthenticated()) {
+    if (!this.auth || typeof this.auth.expires_at !== 'number' && this.auth.expires_at <= Date.now()) {
       this.auth = await this.refreshAuth(this.auth.refresh_token)
       this.auth.expires_at = Date.now() + this.auth.expires_in * 1000
-      this.storage.saveJson('timedoctor', this.auth)
+      await this.storage.saveJson('timedoctor', this.auth)
     }
+
+    return this.auth.access_token
   }
 
   private async refreshAuth(refresh_token) {
