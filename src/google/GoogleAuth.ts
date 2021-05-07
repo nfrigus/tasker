@@ -1,6 +1,6 @@
-import { inject, injectable } from 'inversify'
+import { injectable } from 'inversify'
+import { Storage } from '../core/Storage'
 
-const fs = require('fs')
 const readline = require('readline')
 const { google } = require('googleapis')
 
@@ -14,13 +14,8 @@ export default class GoogleAuth {
   private oauth: any
 
   constructor(
-    @inject('config') private config,
+    private storage: Storage,
   ) {}
-
-  // todo: Refactor to use Storage
-  private getTokenPath() {
-    return this.config.secretsDir + '/google.token.json'
-  }
 
   public async getAuth() {
     return this.auth || (this.auth = this._getAuth())
@@ -34,9 +29,7 @@ export default class GoogleAuth {
   }
 
   private async loadCredentials() {
-    this.credentials = await fs.promises
-      .readFile(this.config.secretsDir + '/google.credentials.json')
-      .then(JSON.parse)
+    this.credentials = await this.storage.loadJson('google.credentials')
 
     return this.credentials
   }
@@ -52,10 +45,10 @@ export default class GoogleAuth {
   private authorize() {
     this.createOauthClient()
 
-    return fs.promises.readFile(this.getTokenPath()).then(
-      token => this.oauth.setCredentials(JSON.parse(token)),
-      () => this.requestRefreshToken()
-        .then(token => this.oauth.setCredentials(token)))
+    return this.storage
+      .loadJson('google.token')
+      .catch(() => this.requestRefreshToken())
+      .then(token => this.oauth.setCredentials(token))
   }
 
   private requestRefreshToken() {
@@ -83,7 +76,7 @@ export default class GoogleAuth {
       this.oauth.getToken(code, (err, token) => {
         if (err) return reject('Error while trying to retrieve access token: ' + err)
 
-        fs.promises.writeFile(this.getTokenPath(), JSON.stringify(token))
+        this.storage.saveJson('google.token', token)
           .then(() => resolve(token))
       })
     })
