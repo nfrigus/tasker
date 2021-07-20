@@ -3,4 +3,5 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: DEVBITOFTRADE
     steps:
+      - run: $env:username
       - run: pm2 status
