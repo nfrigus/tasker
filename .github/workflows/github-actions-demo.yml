@@ -1,0 +1,6 @@
+on: [push]
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: DEVBITOFTRADE
+    steps:
+      - run: pm2 status
