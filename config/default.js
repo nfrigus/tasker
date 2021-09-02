@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   logsDir: __dirname + '/../var/logs',
   secretsDir: __dirname + '/secrets',
   discord: {

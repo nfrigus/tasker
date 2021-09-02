@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "build": "tsc",
     "debug": "node --inspect --nolazy .",
     "start": "node .",
     "test": "mocha --retries 3 --parallel -r src/globals.test.js \"src/**/*.spec.ts\"",

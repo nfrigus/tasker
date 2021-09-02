@@ -3,3 +3,4 @@
 config/local*
 config/secrets/*
 node_modules/
+build/

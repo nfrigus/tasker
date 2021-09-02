@@ -5,7 +5,10 @@
     "lib": ["es6", "esnext"],
     "module": "commonjs",
     "moduleResolution": "node",
+    "outDir": "build",
     "target": "ES2018",
     "types": ["node", "reflect-metadata"]
-  }
+  },
+  "exclude": ["node_modules", "**/*.spec.ts"],
+  "include": ["src/**/*"]
 }
