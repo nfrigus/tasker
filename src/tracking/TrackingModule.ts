@@ -36,11 +36,9 @@ export class TrackingModule {
 
       this.io.log(`TimeDoctor time logged:\n${stats}`)
     } catch (e) {
-      console.error(e.response.data)
-      this.io.log(
-        `Token update link: \n` +
-        `https://webapi.timedoctor.com/oauth/v2/auth?client_id=1_1bhjinec22m84ww044k0808kgs4c8g8o0s8ccsgo0048400ooo&redirect_uri=https%3A%2F%2Fadmin.timedoctor.com%2Fv2%2Fcontent%2Fget_api_key.php&response_type=token`
-      )
+      console.error(e?.response?.data)
+      const wizardUrl = this.timeDoctor.authWizard()
+      this.io.log(`Auth broken. Follow URL to renew:\n${wizardUrl}`)
     }
   }
 }
