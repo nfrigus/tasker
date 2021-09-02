@@ -14,6 +14,7 @@ describe("TaskTimer", () => {
         'Days',
         'Log',
         'Stats',
+        'Priorities',
       ])))
 
   it("fetchLoggedData", async () => {

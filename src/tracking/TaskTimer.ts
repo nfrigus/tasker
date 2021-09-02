@@ -42,14 +42,6 @@ export class TaskTimer {
       label: "year",
       range: "Days!H14:I15"
     },
-    MonthTarget: {
-      label: "MonthTarget",
-      range: "Log!H0:H5"
-    },
-    MonthProjectReport: {
-      label: "MonthProjectReport",
-      range: "Log!H6:H49"
-    }
   }
 
   constructor(
