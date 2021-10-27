@@ -1,6 +1,7 @@
 // @ts-ignore
 import { Client } from "discord.js-selfbot"
-import { filter, tap } from "rxjs/operators"
+import { Collection, Message } from "discord.js"
+import { filter, finalize, tap } from "rxjs/operators"
 import { fromEvent } from "rxjs"
 import { inject, injectable } from "inversify"
 import { promises as fs } from "fs"
@@ -14,6 +15,7 @@ export enum DiscordMessageFilter {
   'none' = 'none',
 }
 
+type MessageCollection = Collection<string, Message>
 @injectable()
 export default class Discord {
   private filteredMessages$
@@ -36,6 +38,7 @@ export default class Discord {
     this.messages$.pipe(
       filter((msg: any) => msg.content === 'ping'),
       tap((msg: any) => msg.reply('pong')),
+      finalize(() => console.log('Discord::message unsubscribe')),
     ).subscribe()
 
     this.setMsgFilter(DiscordMessageFilter.guild)
@@ -54,7 +57,8 @@ export default class Discord {
    */
   public async postWFH() {
     const channel = this.client.channels.cache.get(this.config.discord.channels.wfh)
-    const collection = await channel.messages.fetch()
+    const before = new Date(Date.now() - 86400e3)
+    const collection = await this.getChannelMessagesBefore(channel.id, before)
 
     const today = moment().startOf('day').valueOf()
     const userId = this.client.user.id
@@ -92,6 +96,22 @@ export default class Discord {
     }
 
     return this.filteredMessages$
+  }
+
+  private async getChannelMessagesBefore(channel, date) {
+    const { messages } = this.client.channels.cache.get(channel)
+    let collection: MessageCollection = await messages.fetch({ limit: 100 })
+
+    while (collection.last().createdAt > date) {
+      const data = await messages.fetch({
+        limit: 100,
+        before: collection.last().id,
+      })
+
+      collection = collection.concat(data)
+    }
+
+    return collection
   }
 
   private async logMessage(msg: any) {
