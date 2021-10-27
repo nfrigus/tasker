@@ -75,6 +75,16 @@ export default class Discord {
     return !isPostedToday
   }
 
+  public async getMembersJoinedLast365Days(): Promise<MessageCollection> {
+    const channel = this.config.discord.channels.newMembers
+    const date = new Date(Date.now() - 86400 * 1000 * 365)
+
+    const collection = await this.getChannelMessagesBefore(channel, date)
+
+    return collection
+      .filter(msg => msg.type === 'GUILD_MEMBER_JOIN')
+  }
+
   public async postPM() {
     const channel = await this.client.users.fetch("716632310895738912")
     const collection = await channel.messages.fetch()

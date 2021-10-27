@@ -33,34 +33,49 @@ export class DiscordModule {
   private runDiscord = () => {
     return from(this.discord.login()).pipe(
       switchMap(() => {
-        const wfh$ = this.io.whenKey('dm', 'Post wfh')
-          .pipe(tap(() => this.discord.postWFH()))
-
-        const test$ = this.io.whenKey('dt', 'Test')
-          .pipe(tap(() => this.discord.postPM()))
-
-        const filter$ = rotate({
-          key: 'messages.show',
-          options: Object.keys(DiscordMessageFilter),
-          subject: this.msgFilter,
-          trigger: this.io.whenKey('df', 'Switch discord message filter'),
-        }).pipe(tap(value => this.discord.setMsgFilter(value)))
-
-        const messages$ = this.discord.getMessages()
-          .pipe(tap(this.logDiscordMessage))
-
-        const logout$ = this.io.whenKey('dd', 'Logout discord')
-          .pipe(tap(() => this.discord.logout()))
-
         return merge(
-          filter$,
-          messages$,
-          test$,
-          wfh$,
-        ).pipe(takeUntil(logout$))
+          this.listMembersAction(),
+          this.streamMessages(),
+          this.toggleFilterAction(),
+          this.WFHAction(),
+        ).pipe(takeUntil(this.logoutAction()))
       }),
       startWith(null as string),
     )
+  }
+
+  private listMembersAction() {
+    return this.io.whenKey('dn', 'Print last joined members')
+      .pipe(tap(async () => {
+        const messages = await this.discord.getMembersJoinedLast365Days()
+        messages.each(msg => {
+          this.io.log(
+            chalk.yellow(moment(msg.createdAt).format('Y-MM-DD HH:mm')),
+            "\t", msg.author.username,
+          )
+        })
+      }))
+  }
+  private logoutAction() {
+    return this.io.whenKey('dd', 'Logout discord')
+      .pipe(tap(() => this.discord.logout()))
+  }
+  private streamMessages() {
+    return this.discord.getMessages()
+      .pipe(tap(this.logDiscordMessage))
+  }
+  private toggleFilterAction() {
+    return rotate({
+      key: 'messages.show',
+      options: Object.keys(DiscordMessageFilter),
+      subject: this.msgFilter,
+      trigger: this.io.whenKey('df', 'Switch discord message filter'),
+    }).pipe(tap(value => this.discord.setMsgFilter(value)))
+  }
+  private WFHAction() {
+    const wfh$ = this.io.whenKey('dm', 'Post wfh')
+      .pipe(tap(() => this.discord.postWFH()))
+    return wfh$
   }
 
   private logDiscordMessage = (msg: any) => {
