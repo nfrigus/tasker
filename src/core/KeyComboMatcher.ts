@@ -28,7 +28,7 @@ export class KeyComboMatcher {
     return destination.pipe()
   }
 
-  private unregister(combo: string) {
+  unregister(combo: string) {
     const target = this.targets.get(combo)
 
     if (target) {

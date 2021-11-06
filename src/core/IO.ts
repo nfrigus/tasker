@@ -1,11 +1,13 @@
 import { fromEvent, merge, Observable, Subject } from 'rxjs'
-import { bufferCount, filter, finalize, map, tap } from 'rxjs/operators'
+import { finalize, map, mapTo, tap } from 'rxjs/operators'
 import { inject, injectable } from 'inversify'
 import * as chalk from 'chalk'
+import { KeyComboMatcher } from './KeyComboMatcher'
 
 
 @injectable()
 export default class IO {
+  private combo: KeyComboMatcher
   private in$: Observable<string>
   private keys = new Set<KeyBond>()
   private out$ = new Subject<string>()
@@ -14,11 +16,12 @@ export default class IO {
     @inject("process") private process,
     @inject("stdin") private stdin,
     @inject("stdout") private stdout,
-  ) {
-    this.in$ = fromEvent(this.stdin, 'data')
-  }
+  ) {}
 
   public plug() {
+    this.in$ = fromEvent(this.stdin, 'data')
+    this.combo = new KeyComboMatcher(this.in$)
+
     this.stdin.setRawMode(true)
     this.stdin.resume()
     this.stdin.setEncoding('utf8')
@@ -36,6 +39,7 @@ export default class IO {
       ext$,
       hlp$,
       out$,
+      this.in$,
     )
   }
   public whenKey(keys, reason = '') {
@@ -44,14 +48,13 @@ export default class IO {
 
     this.logKey('key.register', keys, reason)
 
-    return this.in$.pipe(
-      bufferCount(keys.length, 1),
-      map((keys: any) => keys.join('')),
-      filter(input => input === keys),
+    return this.combo.register(keys).pipe(
+      mapTo(keys),
       tap(() => this.logKey('key.trigger', keys, reason)),
       finalize(() => {
         this.logKey('key.unregister', keys, reason)
         this.keys.delete(value)
+        this.combo.unregister(keys)
       }),
     )
   }
