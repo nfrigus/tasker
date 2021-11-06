@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { inject, injectable } from 'inversify'
 import { HarvestReport } from './HarvestReport'
-import * as moment from 'moment'
 
 
 @injectable()
@@ -42,19 +41,5 @@ export class Harvest {
     const data = await this.getTimeSheets()
 
     return new HarvestReport(data)
-  }
-
-  getSyncDays() {
-    const days = []
-    const week = moment().subtract(1, 'w').startOf('isoWeek')
-
-    for (let i = 0; i < 7 * 2; i++) {
-      days.push(`${week.format('YYYY-MM-DD')}`)
-      week.add(1, 'd')
-
-      if (moment() < week) break
-    }
-
-    return days
   }
 }
