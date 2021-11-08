@@ -9,7 +9,8 @@ export interface WorkLog {
   scope: string
 }
 
-interface ProjectDaySummary {
+export interface ProjectDaySummary {
+  day: string
   description: string
   effort: number
 }
@@ -29,6 +30,7 @@ export class TaskTimerReport {
     const description = tasks.map(i => trim(i.description, '"')).join('\n')
 
     return {
+      day: date,
       description,
       effort,
     }

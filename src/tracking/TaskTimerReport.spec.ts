@@ -1,7 +1,7 @@
 import "chai"
+import * as moment from "moment"
 import { describe, it } from "mocha"
 import { TaskTimerReport } from "./TaskTimerReport"
-import * as moment from "moment"
 
 describe("TaskTimerReport", () => {
   const entity = new TaskTimerReport([{
@@ -27,6 +27,7 @@ describe("TaskTimerReport", () => {
   it("getCombinedDayProjectLog", async () => {
     const report = entity.getCombinedDayProjectLog('2020-01-01', 'Project B')
     report.should.be.eqls({
+      day: '2020-01-01',
       description: 'Description B1\nDescription B2',
       effort: 6,
     })
