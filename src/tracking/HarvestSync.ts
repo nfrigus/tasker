@@ -99,21 +99,47 @@ export class HarvestSync {
   }
 
   private logDayPlan(plan) {
-    const { day } = plan
+    this.io.log(this.formatDayPlan(plan))
+  }
 
-    const timeDiff = plan.time_diff > 0
-      ? chalk.green(`+${plan.time_diff}`)
+  private formatDayPlan(plan: any) {
+    const { day } = plan
+    const date = moment(day)
+    const weekDay = +date.format('E')
+    const isEmpty = !plan.hours && !plan.new_entry
+    const weekNumber = date.format('WW')
+
+    const f_hours_add = plan.time_diff > 0
+      ? chalk.green(`+${plan.time_diff.toFixed(1)}`)
       : plan.time_diff < 0
-        ? chalk.red(plan.time_diff)
+        ? chalk.red(plan.time_diff.toFixed(1))
         : ''
 
-    const dayLog = plan.new_entry
-      ? chalk.green(day)
+    const f_date = plan.new_entry
+      ? chalk.green(date.format('MM.DD'))
       : plan.text_changed || plan.time_diff
-        ? chalk.yellow(day)
-        : day
+        ? chalk.yellow(date.format('MM.DD'))
+        : isEmpty
+          ? chalk.gray(date.format('MM.DD'))
+          : date.format('MM.DD')
 
-    this.io.log(dayLog, plan.hours - plan.time_diff, timeDiff)
+    const f_hours = isEmpty
+      ? chalk.gray('0.0')
+      : (plan.hours - plan.time_diff).toFixed(1)
+
+    const f_week = chalk.dim(`W${weekNumber}`)
+
+    const f_day = weekDay > 5
+      ? chalk.red(date.format('ddd'))
+      : date.format('ddd')
+
+    const f_line = f_hours_add
+      ? `${f_week} ${f_day} ${f_date} ${f_hours} ${f_hours_add}`
+      : `${f_week} ${f_day} ${f_date} ${f_hours}`
+
+    return weekDay === 7
+      ? chalk.underline(f_line)
+      : f_line
   }
 }
 
