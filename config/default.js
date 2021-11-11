@@ -15,8 +15,8 @@ module.exports = {
   },
   harvest: {
     task: {
-      project_id: 24442002,
-      task_id: 14155137,
+      project_id: 29278469,
+      task_id: 14206227,
     },
     credentials: {
       'Authorization': 'Bearer <token>',
