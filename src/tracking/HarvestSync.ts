@@ -113,7 +113,7 @@ export class HarvestSync {
         ? chalk.yellow(day)
         : day
 
-    this.io.log(dayLog, plan.hours + plan.time_diff, timeDiff)
+    this.io.log(dayLog, plan.hours - plan.time_diff, timeDiff)
   }
 }
 
