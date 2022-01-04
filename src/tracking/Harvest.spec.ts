@@ -28,7 +28,7 @@ describe("Harvest", () => {
       calendar_integration_enabled: false,
       calendar_integration_source: null,
       created_at: '2020-03-30T10:10:07Z',
-      updated_at: '2021-11-08T01:29:09Z',
+      updated_at: '2022-01-04T10:26:29Z',
       roles: [],
       avatar_url: 'https://proxy.harvestfiles.com/production_harvestapp_public/uploads/users/avatar/003/203/145/410fecbeaf74e226a7ff35af623b0b5e90b57941/normal.png?1585583667'
     })
