@@ -36,8 +36,15 @@ export class HarvestSync {
     await Promise.all(handlers)
   }
 
+  /**
+   * Returns an array of days to sync in YYYY-MMM-DD format
+   * starting from first day of previous month
+   * or first day of the year if it's later
+   */
   static getSyncDays() {
-    const start = moment().subtract(1, 'M').startOf('month')
+    const startMonth = moment().subtract(1, 'M').startOf('month')
+    const startYear = moment().startOf('year')
+    const start = startMonth > startYear ? startMonth : startYear
 
     return HarvestSync.getDaysBetween(start, moment())
   }

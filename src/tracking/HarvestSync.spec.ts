@@ -5,12 +5,12 @@ import * as moment from 'moment'
 import { HarvestSync } from "./HarvestSync"
 
 describe("HarvestSync", () => {
-  it("getDaysBetween", async () => {
+  it("getDaysBetween", () => {
     HarvestSync.getDaysBetween(moment("2018-01-01"), moment("2018-01-02"))
       .should.deep.equal(["2018-01-01", "2018-01-02"])
   })
 
-  it("getSyncDays", async () => {
+  it("getSyncDays", () => {
     const now = stub(Date, "now").returns(new Date(2021, 2, 2).getTime())
 
     try {
@@ -23,6 +23,17 @@ describe("HarvestSync", () => {
         "2021-02-21", "2021-02-22", "2021-02-23", "2021-02-24", "2021-02-25",
         "2021-02-26", "2021-02-27", "2021-02-28", "2021-03-01", "2021-03-02",
       ])
+    } finally {
+      now.restore()
+    }
+  })
+
+  it("getSyncDays - ignore previous year", () => {
+    const now = stub(Date, "now").returns(new Date(2022, 0, 3).getTime())
+
+    try {
+      const result = HarvestSync.getSyncDays()
+      result.should.be.deep.equal(["2022-01-01", "2022-01-02", "2022-01-03"])
     } finally {
       now.restore()
     }
