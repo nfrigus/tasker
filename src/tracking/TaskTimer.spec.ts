@@ -11,10 +11,9 @@ describe("TaskTimer", () => {
     .then(tabs => tabs
       .should.eql([
         'Legend',
-        'Days',
+        'Year',
+        'Month',
         'Log',
-        'Stats',
-        'Priorities',
       ])))
 
   it("fetchLoggedData", async () => {

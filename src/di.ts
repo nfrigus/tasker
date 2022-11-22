@@ -9,6 +9,8 @@ export const container = new Container({
   defaultScope: "Singleton",
 })
 
+export { config }
+
 container.bind("app").to(App)
 container.bind("config").toConstantValue(config)
 container.bind("process").toConstantValue(process)

@@ -16,23 +16,23 @@ export class TaskTimer {
   private ranges = {
     logMonth0: {
       label: "logMonth0",
-      range: "Days!I15:J16"
+      range: "Year!I15:J16"
     },
     logMonth: {
       label: "logMonth",
-      range: "Days!H15:I16"
+      range: "Year!H15:I16"
     },
     DayOffTrack: {
       label: "DayOffTrack",
-      range: "Days!A0:E15"
+      range: "Year!A0:E16"
     },
     MonthTrack: {
       label: "MonthTrack",
-      range: "Days!F0:M13"
+      range: "Year!F0:M13"
     },
     MonthStats: {
       label: "MonthStats",
-      range: "Stats!A0:E20",
+      range: "Month!A0:E19",
     },
     WorkLog: {
       label: "WorkLog",
@@ -40,7 +40,7 @@ export class TaskTimer {
     },
     year: {
       label: "year",
-      range: "Days!H14:I15"
+      range: "Year!H14:I15"
     },
   }
 
