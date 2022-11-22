@@ -10,15 +10,16 @@ describe("IO", () => {
   const whenKeyCases: [string, Record<string, number>][] = [
     ['aba', {
       a: 2,
-      aba: 1,
+      aba: 0,
       b: 1,
     }],
     ['abc', {
       a: 1,
-      ab: 1,
+      ab: 0,
+      abc: 0,
       ac: 0,
       b: 1,
-      bc: 1,
+      bc: 0,
       c: 1,
       d: 0,
     }]
