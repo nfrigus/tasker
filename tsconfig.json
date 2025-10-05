@@ -10,5 +10,5 @@
     "types": ["node", "reflect-metadata"]
   },
   "exclude": ["node_modules", "**/*.spec.ts"],
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "node_modules/typescript/lib/lib.dom.d.ts"]
 }
