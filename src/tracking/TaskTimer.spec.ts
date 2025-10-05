@@ -9,12 +9,7 @@ describe("TaskTimer", () => {
   it("getSheetTabs", async () => entity
     .getSheetTabs()
     .then(tabs => tabs
-      .should.eql([
-        'Legend',
-        'Year',
-        'Month',
-        'Log',
-      ])))
+      .should.eql(['Year', 'Month', 'Log', 'Auto'])))
 
   it("fetchLoggedData", async () => {
     const res = await entity.loadWorkLog()
@@ -27,8 +22,9 @@ describe("TaskTimer", () => {
       'project',
       'scope',
     ]))
-    res.some(i => i.project === 'CC').should.be.ok
+    res.some(i => i.project === 'vita').should.be.ok
   })
 
   it("verifyBook", async () => entity.verifyBook())
 })
+

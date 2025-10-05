@@ -24,7 +24,7 @@ export class TaskTimer {
     },
     DayOffTrack: {
       label: "DayOffTrack",
-      range: "Year!A0:E16"
+      range: "Year!A0:E13"
     },
     MonthTrack: {
       label: "MonthTrack",

@@ -42,7 +42,7 @@ export default class GoogleAuth {
     return oAuth2Client
   }
 
-  private authorize() {
+  private async authorize() {
     this.createOauthClient()
 
     return this.storage
