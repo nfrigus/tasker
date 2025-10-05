@@ -1,13 +1,15 @@
 import "chai"
 import { before, describe, it } from "mocha"
+import * as Config from "config"
 import { GoogleSheet } from "./GoogleSheet"
 import { container } from '../di'
 
 describe("GoogleSheet", () => {
-  const sheetId = "1S_EvpIkN62UQbW-iKEKPwZSdQLeYYFwf5yHXyfHexF4"
+  let sheetId: string
   let entity: GoogleSheet
 
   before(() => {
+    sheetId = (<typeof Config>container.get('config')).get('tracking.sheets.2020')
     entity = container.get(GoogleSheet)
   })
 
