@@ -61,4 +61,23 @@ export class TaskTimerReport {
 
     return report
   }
+
+  getJiraLogCalls() {
+    return this.data.map(i => {
+      let args = [
+        i.date,
+        i.scope,
+        i.effort + 'h',
+        i.description,
+      ].map(i => JSON.stringify(i)).join(',\t')
+
+      return `submitTimeLog(${args})`
+    })
+  }
+
+  filterLastWeeks(weeks: number = 2): this {
+    const from = moment().subtract(weeks, 'weeks').startOf('week')
+
+    return new (this.constructor as new (...args: any[]) => this)(this.data.filter(i => moment(i.date) >= from))
+  }
 }

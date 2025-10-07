@@ -17,9 +17,16 @@ export class TrackingModule {
         await this.tracker.verifyBook()
         this.io.log('Book is valid')
       }))
+    const wlog$ = this.io.whenKey('bw', 'Worklog')
+      .pipe(tap(async () => {
+        const report = await this.tracker.getReport()
+        const records = report.filterLastWeeks().getJiraLogCalls()
+        this.io.log(records.join('\n'))
+      }))
 
     return merge(
       books$,
+      wlog$,
     )
   }
 }

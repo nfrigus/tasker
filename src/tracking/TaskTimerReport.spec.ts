@@ -1,28 +1,14 @@
 import "chai"
 import * as moment from "moment"
 import { describe, it } from "mocha"
-import { TaskTimerReport } from "./TaskTimerReport"
+import { TaskTimerReport, WorkLog } from "./TaskTimerReport"
 
 describe("TaskTimerReport", () => {
-  const entity = new TaskTimerReport([{
-    date: '2020-01-01',
-    description: '',
-    effort: 1,
-    project: 'Project A',
-    scope: 'Scope A',
-  }, {
-    date: '2020-01-01',
-    description: 'Description B1',
-    effort: 2,
-    project: 'Project B',
-    scope: 'Scope A',
-  }, {
-    date: '2020-01-01',
-    description: 'Description B2',
-    effort: 4,
-    project: 'Project B',
-    scope: 'Scope B',
-  }])
+  const entity = new TaskTimerReport([
+    ['2020-01-01', 'Project A', 'Scope A', 1, '',],
+    ['2020-01-01', 'Project B', 'Scope A', 2, 'Description B1'],
+    ['2020-01-01', 'Project B', 'Scope B', 4, 'Description B2'],
+  ].map(toWorkLog))
 
   it("getCombinedDayProjectLog", async () => {
     const report = entity.getCombinedDayProjectLog('2020-01-01', 'Project B')
@@ -42,3 +28,13 @@ describe("TaskTimerReport", () => {
     report.slice(-1)[0].day.should.equal(moment().format('YYYY-MM-DD'))
   })
 })
+
+function toWorkLog(data: any[]): WorkLog {
+  return (<WorkLog>{
+    date: data[0],
+    description: data[4],
+    effort: data[3],
+    project: data[1],
+    scope: data[2],
+  })
+}
