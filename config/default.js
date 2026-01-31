@@ -12,6 +12,7 @@ module.exports = {
       2023: '1wvCAkDnhDHaj8WK_KBkNH9bkXmjJGRpRiporD8N7NNE',
       2024: '1YQ7UjL2Lslv41p7wlwrzLNE_kuF18eaJVrpUqNggnPw',
       2025: '1OvGmGgb3xasjmhbt8z53riKMYS3E0lELwVIUQoGY_Cw',
+      2026: '1T1YDt2Ut5BMAFWODlbQDJqFXhiBVgls8N3Yc2djQZ6A',
     },
   },
 }

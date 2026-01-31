@@ -9,7 +9,7 @@ describe("TaskTimer", () => {
   it("getSheetTabs", async () => entity
     .getSheetTabs()
     .then(tabs => tabs
-      .should.eql(['Year', 'Month', 'Log', 'Auto'])))
+      .should.eql(['Year', 'Month', 'Log', 'Notes', 'Auto'])))
 
   it("fetchLoggedData", async () => {
     const res = await entity.loadWorkLog()
